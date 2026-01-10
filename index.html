@@ -1,0 +1,1723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Engineering infrastructure and integrations for teams that move fast</title>
+    <meta name="description" content="We build the infrastructure and integrations that power fast-moving businesses—designed to scale, ship quickly, and stay reliable as you grow.">
+    <meta name="keywords" content="IT infrastructure services Singapore, network infrastructure, cloud migration services, system integration consulting, managed infrastructure">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Engineering infrastructure and integrations for teams that move fast">
+    <meta property="og:description" content="Transform your business with Singapore's trusted IT partner.">
+    <meta property="og:locale" content="en_SG">
+
+    <!-- Vue.js 3 CDN -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <!-- Cloudflare Turnstile -->
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --color-text: #1d1d1f;
+            --color-text-secondary: #86868b;
+            --color-text-light: #f5f5f7;
+            --color-bg-light: #fbfbfd;
+            --color-bg-dark: #000000;
+            --color-bg-gray: #f5f5f7;
+            --color-accent: #0071e3;
+            --color-accent-hover: #0077ed;
+            --nav-height: 48px;
+            --section-spacing: 30px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: var(--color-text);
+            background: #fff;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--nav-height);
+            background: rgba(251, 251, 253, 0.8);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        .nav-container {
+            max-width: 1024px;
+            margin: 0 auto;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 22px;
+        }
+
+        .nav-logo {
+            font-size: 21px;
+            font-weight: 700;
+            color: var(--color-text);
+            text-decoration: none;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-logo svg {
+            width: 24px;
+            height: 24px;
+            color: var(--color-accent);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--color-text);
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            opacity: 1;
+        }
+
+        .nav-cta {
+            background: var(--color-accent);
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 980px;
+            font-size: 12px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background 0.3s ease;
+        }
+
+        .nav-cta:hover {
+            background: var(--color-accent-hover);
+        }
+
+        .nav-mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        .nav-mobile-toggle span {
+            display: block;
+            width: 18px;
+            height: 2px;
+            background: var(--color-text);
+            margin: 4px 0;
+            transition: all 0.3s ease;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: calc(var(--nav-height) + 60px) 24px 60px;
+            background: var(--color-bg-light);
+        }
+
+        .hero-title {
+            font-size: clamp(40px, 8vw, 80px);
+            font-weight: 700;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            margin-bottom: 16px;
+            max-width: 900px;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(21px, 3vw, 28px);
+            font-weight: 400;
+            color: var(--color-text-secondary);
+            max-width: 600px;
+            line-height: 1.4;
+            margin-bottom: 32px;
+        }
+
+        /* Hero Carousel */
+        .hero-carousel {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .hero-slides {
+            position: relative;
+            min-height: 240px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-slide {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease;
+        }
+
+        .hero-slide.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .hero-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 24px;
+            margin-bottom: 32px;
+        }
+
+        .hero-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--color-text-secondary);
+            opacity: 0.3;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            padding: 0;
+        }
+
+        .hero-dot:hover {
+            opacity: 0.5;
+        }
+
+        .hero-dot.active {
+            opacity: 1;
+            background: var(--color-accent);
+            transform: scale(1.2);
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: 980px;
+            font-size: 17px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--color-accent);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: var(--color-accent-hover);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--color-accent);
+        }
+
+        .btn-secondary:hover {
+            text-decoration: underline;
+        }
+
+        .btn-arrow {
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover .btn-arrow {
+            transform: translateX(4px);
+        }
+
+        /* Section Base */
+        .section {
+            padding: var(--section-spacing) 1px;
+        }
+
+        .section-container {
+            max-width: 1024px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-size: clamp(32px, 5vw, 56px);
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+
+        .section-subtitle {
+            font-size: 21px;
+            color: var(--color-text-secondary);
+            margin-top: 16px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Services Section - Clean, professional */
+        .services {
+            background: #fff;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .service-card {
+            background: #fff;
+            border-radius: 24px;
+            overflow: hidden;
+            text-align: center;
+            padding: 60px 40px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .service-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        }
+
+        .service-card-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 24px;
+            background: linear-gradient(135deg, var(--color-accent), #5856d6);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .service-card-icon svg {
+            width: 40px;
+            height: 40px;
+            stroke: #fff;
+            fill: none;
+        }
+
+        .service-card h3 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+
+        .service-card .tagline {
+            font-size: 14px;
+            color: var(--color-accent);
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+
+        .service-card p {
+            color: var(--color-text-secondary);
+            font-size: 17px;
+            margin-bottom: 20px;
+        }
+
+        .service-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .service-feature {
+            font-size: 13px;
+            color: var(--color-text);
+            background: var(--color-bg-gray);
+            padding: 6px 14px;
+            border-radius: 100px;
+        }
+
+        /* Why We Exist Section - Personal, authentic tone */
+        .why-exist {
+            background: linear-gradient(180deg, #fff 0%, #f8f9fa 100%);
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .why-exist-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: left;
+            position: relative;
+            padding-left: 32px;
+            border-left: 4px solid var(--color-accent);
+        }
+
+        .why-exist-title {
+            font-size: clamp(24px, 4vw, 32px);
+            font-weight: 600;
+            line-height: 1.2;
+            letter-spacing: -0.01em;
+            margin-bottom: 24px;
+            color: var(--color-accent);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .why-exist-text {
+            font-size: clamp(20px, 3vw, 26px);
+            line-height: 1.6;
+            color: var(--color-text);
+            font-weight: 400;
+        }
+
+        .why-exist-text p {
+            margin-bottom: 20px;
+        }
+
+        .why-exist-text p:last-child {
+            margin-bottom: 0;
+            font-weight: 600;
+            font-style: italic;
+        }
+
+        /* Why Section (Dark) */
+        .why {
+            background: var(--color-bg-dark);
+            color: var(--color-text-light);
+        }
+
+        .why .section-eyebrow {
+            color: var(--color-text-secondary);
+        }
+
+        .why .section-subtitle {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .why-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .why-list {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        .why-item {
+            display: flex;
+            gap: 20px;
+        }
+
+        .why-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .why-icon svg {
+            width: 24px;
+            height: 24px;
+            stroke: var(--color-accent);
+        }
+
+        .why-item h4 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .why-item p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .why-visual {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+            border-radius: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .why-visual-icon {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, var(--color-accent), #5856d6);
+            border-radius: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .why-visual-icon svg {
+            width: 60px;
+            height: 60px;
+            fill: #fff;
+        }
+
+        /* Industries Section - Clean, focused */
+        .industries {
+            background: var(--color-bg-gray);
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .industries-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+
+        .industry-item {
+            text-align: center;
+            padding: 32px 20px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .industry-item:hover {
+            background: var(--color-bg-gray);
+        }
+
+        .industry-icon {
+            width: 64px;
+            height: 64px;
+            background: var(--color-bg-gray);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            transition: all 0.3s ease;
+        }
+
+        .industry-item:hover .industry-icon {
+            background: linear-gradient(135deg, var(--color-accent), #5856d6);
+        }
+
+        .industry-icon svg {
+            width: 28px;
+            height: 28px;
+            stroke: var(--color-accent);
+            transition: stroke 0.3s ease;
+        }
+
+        .industry-item:hover .industry-icon svg {
+            stroke: #fff;
+        }
+
+        .industry-item h4 {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: var(--color-text);
+        }
+
+        .industry-item p {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+        }
+
+        /* CTA Section */
+        .cta {
+            background: linear-gradient(135deg, var(--color-accent) 0%, #5856d6 100%);
+            color: #fff;
+            text-align: center;
+        }
+
+        .cta .section-title {
+            color: #fff;
+        }
+
+        .cta .section-subtitle {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .cta .btn-primary {
+            background: #fff;
+            color: var(--color-accent);
+        }
+
+        .cta .btn-primary:hover {
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .cta .btn-secondary {
+            color: #fff;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--color-bg-gray);
+            padding: 60px 24px 24px;
+        }
+
+        .footer-container {
+            max-width: 1024px;
+            margin: 0 auto;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 24px;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .footer-copyright {
+            font-size: 12px;
+            color: var(--color-text-secondary);
+        }
+
+        .footer-legal {
+            display: flex;
+            gap: 24px;
+        }
+
+        .footer-legal a {
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        .footer-legal a:hover {
+            text-decoration: underline;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed;
+            top: var(--nav-height);
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(251, 251, 253, 0.98);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 24px;
+            display: none;
+            flex-direction: column;
+            gap: 16px;
+            z-index: 999;
+        }
+
+        .mobile-menu.active {
+            display: flex;
+        }
+
+        .mobile-menu a {
+            font-size: 17px;
+            color: var(--color-text);
+            text-decoration: none;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            padding: 24px;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: #fff;
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            transform: scale(0.9) translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            color: var(--color-text-secondary);
+            transition: color 0.2s ease;
+        }
+
+        .modal-close:hover {
+            color: var(--color-text);
+        }
+
+        .modal-title {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+        }
+
+        .modal-subtitle {
+            font-size: 15px;
+            color: var(--color-text-secondary);
+            margin-bottom: 24px;
+        }
+
+        .modal-legal {
+            max-width: 700px;
+        }
+
+        .modal-legal .modal-title {
+            font-size: 32px;
+            margin-bottom: 4px;
+        }
+
+        .modal-legal .modal-date {
+            font-size: 13px;
+            color: var(--color-text-secondary);
+            margin-bottom: 24px;
+        }
+
+        .modal-legal .legal-content {
+            font-size: 15px;
+            line-height: 1.7;
+            color: var(--color-text);
+        }
+
+        .modal-legal .legal-content h2 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-top: 32px;
+            margin-bottom: 12px;
+            color: var(--color-text);
+        }
+
+        .modal-legal .legal-content h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 24px;
+            margin-bottom: 8px;
+            color: var(--color-text);
+        }
+
+        .modal-legal .legal-content p {
+            margin-bottom: 12px;
+        }
+
+        .modal-legal .legal-content ul {
+            margin-bottom: 12px;
+            padding-left: 24px;
+        }
+
+        .modal-legal .legal-content li {
+            margin-bottom: 6px;
+        }
+
+        .modal-legal .legal-content strong {
+            font-weight: 600;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--color-text);
+            margin-bottom: 8px;
+        }
+
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: inherit;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            background: #fff;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--color-accent);
+            box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.15);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-checkbox {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .form-checkbox input {
+            width: 18px;
+            height: 18px;
+            margin-top: 2px;
+            accent-color: var(--color-accent);
+        }
+
+        .form-checkbox label {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            line-height: 1.5;
+        }
+
+        .form-checkbox a {
+            color: var(--color-accent);
+        }
+
+        .form-submit {
+            width: 100%;
+            padding: 16px;
+            background: var(--color-accent);
+            color: #fff;
+            border: none;
+            border-radius: 980px;
+            font-size: 17px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .form-submit:hover {
+            background: var(--color-accent-hover);
+        }
+
+        .form-submit:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .form-error {
+            background: #fee2e2;
+            color: #dc2626;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .industries-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links,
+            .nav-cta {
+                display: none;
+            }
+
+            .nav-mobile-toggle {
+                display: block;
+            }
+
+            .why-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .why-visual {
+                order: -1;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .modal {
+                padding: 24px;
+            }
+
+            .industries-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+
+            .hero {
+                min-height: auto;
+                padding-top: calc(var(--nav-height) + 80px);
+                padding-bottom: 80px;
+            }
+
+            .hero-slides {
+                min-height: 280px;
+            }
+
+            .section {
+                padding: 60px 24px;
+            }
+
+            .service-card {
+                padding: 40px 24px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-slides {
+                min-height: 320px;
+            }
+
+            .industries-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-legal {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- Navigation -->
+        <nav class="nav">
+            <div class="nav-container">
+                <a href="#" class="nav-logo">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="2" width="20" height="8" rx="2"/>
+                        <rect x="2" y="14" width="20" height="8" rx="2"/>
+                        <circle cx="6" cy="6" r="1" fill="currentColor"/>
+                        <circle cx="6" cy="18" r="1" fill="currentColor"/>
+                    </svg>
+                    {{ company.name }}
+                </a>
+                <ul class="nav-links">
+                    <li v-for="link in navLinks" :key="link.href">
+                        <a :href="link.href" @click="scrollToSection($event, link.href)">{{ link.label }}</a>
+                    </li>
+                </ul>
+                <a href="#services" class="nav-cta" @click.prevent="showContactModal = true">Get Started</a>
+                <button class="nav-mobile-toggle" @click="toggleMobileMenu" :aria-expanded="mobileMenuOpen">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Mobile Menu -->
+        <div class="mobile-menu" :class="{ active: mobileMenuOpen }">
+            <a v-for="link in navLinks" :key="link.href" :href="link.href" @click="scrollToSection($event, link.href); mobileMenuOpen = false">{{ link.label }}</a>
+            <a href="#" @click.prevent="showContactModal = true; mobileMenuOpen = false">Get Started</a>
+        </div>
+
+        <!-- Hero Section -->
+        <section class="hero" id="home">
+            <div class="hero-carousel fade-in">
+                <div class="hero-slides">
+                    <div
+                        v-for="(slide, index) in hero.slides"
+                        :key="index"
+                        class="hero-slide"
+                        :class="{ active: index === currentSlide }"
+                    >
+                        <h1 class="hero-title">{{ slide.title }}</h1>
+                        <p class="hero-subtitle">{{ slide.subtitle }}</p>
+                    </div>
+                </div>
+                <div class="hero-dots">
+                    <button
+                        v-for="(slide, index) in hero.slides"
+                        :key="index"
+                        class="hero-dot"
+                        :class="{ active: index === currentSlide }"
+                        @click="goToSlide(index)"
+                        :aria-label="'Go to slide ' + (index + 1)"
+                    ></button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Why We Exist Section -->
+        <section class="section why-exist" id="why-we-are-here">
+            <div class="section-container">
+                <div class="why-exist-content fade-in">
+                    <h2 class="why-exist-title">Why We Are Here</h2>
+                    <div class="why-exist-text">
+                        <p>Founded by an engineer tired of watching clients get sold solutions they didn't need. We've sat through enough vendor pitches where the "best practice" mysteriously aligned with whatever hardware they were pushing that quarter.</p>
+                        <p>We build what actually solves your problem - even if that means recommending against the enterprise stack with the biggest commission. Sometimes the answer is a well-configured spreadsheet. Sometimes it's open-source tools. Sometimes it is the enterprise solution, but only when the problem demands it.
+<p>No quotas. No preferred vendors. No solutions in search of problems.</p>
+<p>Just engineering.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Why Section -->
+        <section class="section why" id="what-makes-us-different">
+            <div class="section-container">
+                <div class="section-header fade-in">
+                    <h2 class="section-title">{{ why.title }}</h2>
+                    <p class="section-subtitle">{{ why.subtitle }}</p>
+                </div>
+                <div class="why-grid">
+                    <div class="why-list">
+                        <div v-for="item in why.items" :key="item.title" class="why-item fade-in">
+                            <div class="why-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" v-html="item.icon"></svg>
+                            </div>
+                            <div>
+                                <h4>{{ item.title }}</h4>
+                                <p>{{ item.description }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="why-visual fade-in">
+                        <div class="why-visual-icon">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                <circle cx="9" cy="7" r="4"/>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section class="section services" id="services">
+            <div class="section-container">
+                <div class="services-grid">
+                    <div v-for="service in services.items" :key="service.title" class="service-card fade-in">
+                        <div class="service-card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" v-html="service.icon"></svg>
+                        </div>
+                        <h3>{{ service.title }}</h3>
+                        <p class="tagline">{{ service.tagline }}</p>
+                        <p>{{ service.description }}</p>
+                        <div class="service-features">
+                            <span v-for="feature in service.features" :key="feature" class="service-feature">{{ feature }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Industries Section -->
+        <section class="section industries">
+            <div class="section-container">
+                <div class="section-header fade-in">
+                    <h2 class="section-title">{{ industries.title }}</h2>
+                    <p class="section-subtitle">{{ industries.subtitle }}</p>
+                </div>
+                <div class="industries-grid">
+                    <div v-for="industry in industries.items" :key="industry.name" class="industry-item fade-in">
+                        <div class="industry-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" v-html="industry.icon"></svg>
+                        </div>
+                        <h4>{{ industry.name }}</h4>
+                        <p>{{ industry.description }}</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="section cta">
+            <div class="section-container">
+                <div class="section-header fade-in">
+                    <h2 class="section-title">{{ cta.title }}</h2>
+                    <p class="section-subtitle">{{ cta.subtitle }}</p>
+                </div>
+                <div class="hero-actions fade-in">
+                    <a href="#" class="btn btn-primary" @click.prevent="showContactModal = true">
+                        {{ cta.primaryCta }}
+                        <svg class="btn-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-container">
+                <div class="footer-content">
+                    <div class="footer-copyright">{{ footer.copyright }}</div>
+                    <div class="footer-legal">
+                        <a href="#" @click.prevent="showPrivacyModal = true">Privacy Policy</a>
+                        <a href="#" @click.prevent="showTermsModal = true">Terms of Service</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Contact Modal -->
+        <div class="modal-overlay" :class="{ active: showContactModal }" @click.self="showContactModal = false">
+            <div class="modal">
+                <button class="modal-close" @click="showContactModal = false" aria-label="Close modal">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
+                </button>
+                <h2 class="modal-title">Get in Touch</h2>
+                <p class="modal-subtitle">Tell us about your project and we'll get back to you shortly.</p>
+                <form @submit.prevent="handleSubmit">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="name">Full Name *</label>
+                            <input type="text" id="name" class="form-input" v-model="form.name" placeholder="John Doe" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="company">Company Name *</label>
+                            <input type="text" id="company" class="form-input" v-model="form.company" placeholder="Your Company Pte Ltd" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="email">Email Address *</label>
+                            <input type="email" id="email" class="form-input" v-model="form.email" placeholder="john@company.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="phone">Phone Number</label>
+                            <input type="tel" id="phone" class="form-input" v-model="form.phone" placeholder="+65 9123 4567">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="message">Tell Us About Your Project *</label>
+                        <textarea id="message" class="form-textarea" v-model="form.message" placeholder="Describe your IT challenges and goals..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <div class="cf-turnstile" data-sitekey="0x4AAAAAAB3FeN8IbQjn88SP9qxsXYrjJFs" data-callback="onTurnstileSuccess" data-expired-callback="onTurnstileExpired"></div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-checkbox">
+                            <input type="checkbox" id="consent" v-model="form.consent" required>
+                            <label for="consent">I agree to the <a href="#" @click.prevent="showPrivacyModal = true">Privacy Policy</a> and consent to being contacted</label>
+                        </div>
+                    </div>
+                    <div v-if="formError" class="form-error">{{ formError }}</div>
+                    <button type="submit" class="form-submit" :disabled="formSubmitting">
+                        <svg v-if="!formSubmitting" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 2L11 13"/>
+                            <path d="M22 2L15 22L11 13L2 9L22 2Z"/>
+                        </svg>
+                        <span v-if="formSubmitting" class="spinner"></span>
+                        {{ formSubmitting ? 'Sending...' : 'Send Message' }}
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Privacy Policy Modal -->
+        <div class="modal-overlay" :class="{ active: showPrivacyModal }" @click.self="showPrivacyModal = false">
+            <div class="modal modal-legal">
+                <button class="modal-close" @click="showPrivacyModal = false" aria-label="Close modal">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
+                </button>
+                <h2 class="modal-title">Privacy Policy</h2>
+                <p class="modal-date">Effective Date: January 8, 2026</p>
+                <div class="legal-content">
+                    <h2>1. Introduction</h2>
+                    <p>JE Dynamics Pte. Ltd. ("we," "us," or "our") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, store, and protect your personal and business information when you use our IT system integration services.</p>
+
+                    <h2>2. Information We Collect</h2>
+                    <h3>2.1 Personal Information</h3>
+                    <ul>
+                        <li>Full name, job title and company name</li>
+                        <li>Email address and phone number</li>
+                        <li>Physical business address</li>
+                        <li>Account credentials (for client portals)</li>
+                        <li>Billing and payment information</li>
+                    </ul>
+
+                    <h3>2.2 Technical Information</h3>
+                    <ul>
+                        <li>IP addresses and server configurations</li>
+                        <li>Network topology and system performance data</li>
+                        <li>Service access logs and support ticket history</li>
+                        <li>Error logs and diagnostics</li>
+                    </ul>
+
+                    <h2>3. How We Use Your Information</h2>
+                    <ul>
+                        <li>Provide requested IT services and customer support</li>
+                        <li>Process payments and maintain financial records</li>
+                        <li>Communicate about services, updates, and changes</li>
+                        <li>Protect against security threats and fraud</li>
+                        <li>Comply with legal and regulatory requirements</li>
+                    </ul>
+
+                    <h2>4. Data Sharing</h2>
+                    <p>We may share information with service providers (cloud hosting, payment processors), business partners for integrated solutions, and when required by law. We do NOT sell your personal information to third parties.</p>
+
+                    <h2>5. Data Security</h2>
+                    <p>We implement encryption of data in transit and at rest, firewalls and intrusion detection, multi-factor authentication, regular security updates, and secure backup systems.</p>
+
+                    <h2>6. Your Rights</h2>
+                    <ul>
+                        <li>Request copies of your personal information</li>
+                        <li>Update or correct inaccurate information</li>
+                        <li>Request deletion of your data</li>
+                        <li>Object to certain processing activities</li>
+                    </ul>
+
+                    <h2>7. Contact Us</h2>
+                    <p>For privacy questions or concerns, contact us at enquiry@jedyn.com or call +65 6123 4567.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Terms of Service Modal -->
+        <div class="modal-overlay" :class="{ active: showTermsModal }" @click.self="showTermsModal = false">
+            <div class="modal modal-legal">
+                <button class="modal-close" @click="showTermsModal = false" aria-label="Close modal">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
+                </button>
+                <h2 class="modal-title">Terms of Service</h2>
+                <p class="modal-date">Effective Date: January 8, 2026</p>
+                <div class="legal-content">
+                    <h2>1. Agreement Overview</h2>
+                    <p>These Terms and Conditions govern the provision of IT system integration services and products by JE Dynamics Pte. Ltd. By purchasing our services or products, you agree to these terms.</p>
+
+                    <h2>2. Services</h2>
+                    <p>Services will be provided as described in individual service agreements or proposals. Any changes to agreed services must be documented in writing. We reserve the right to subcontract work to qualified third parties.</p>
+
+                    <h2>3. Client Responsibilities</h2>
+                    <ul>
+                        <li>Provide timely access to facilities, systems, and information</li>
+                        <li>Designate a primary contact person for project communication</li>
+                        <li>Maintain backups of all critical data before any system changes</li>
+                        <li>Review and approve project milestones within agreed timeframes</li>
+                    </ul>
+
+                    <h2>4. Payment Terms</h2>
+                    <ul>
+                        <li>Payment is due within 30 days of invoice date unless otherwise agreed</li>
+                        <li>Late payments may incur interest charges of 1.5% per month</li>
+                        <li>We reserve the right to suspend services for overdue accounts</li>
+                    </ul>
+
+                    <h2>5. Warranties</h2>
+                    <p>We warrant that services will be performed in a professional manner and meet specifications outlined in the service agreement. Warranty period is 90 days from service completion unless otherwise stated.</p>
+
+                    <h2>6. Limitation of Liability</h2>
+                    <p>Our total liability for any claim is limited to the fees paid for the specific service. We are not liable for indirect, incidental, or consequential damages including lost profits, lost data, or business interruption.</p>
+
+                    <h2>7. Intellectual Property</h2>
+                    <p>Custom-developed software remains our property until full payment is received. Upon full payment, client receives a non-exclusive, non-transferable license to use delivered solutions.</p>
+
+                    <h2>8. Confidentiality</h2>
+                    <p>Both parties agree to protect confidential information shared during engagement. Confidentiality obligations survive for 3 years after agreement termination.</p>
+
+                    <h2>9. Termination</h2>
+                    <p>Client may terminate with 30 days written notice. Client is responsible for payment of services rendered up to termination date. We may terminate immediately for non-payment or breach of agreement.</p>
+
+                    <h2>10. Contact Us</h2>
+                    <p>For questions about these Terms of Service, contact us at enquiry@jedyn.com or call +65 6123 4567.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const { createApp, ref, onMounted, onUnmounted } = Vue;
+
+        createApp({
+            setup() {
+                // Company Info
+                const company = ref({
+                    name: 'JE Dynamics'
+                });
+
+                // Navigation
+                const navLinks = ref([
+                    { label: 'Why We Are Here', href: '#why-we-are-here' },
+                    { label: 'What makes us different', href: '#what-makes-us-different' },
+                    { label: 'Services', href: '#services' }
+                ]);
+
+                const mobileMenuOpen = ref(false);
+                const showContactModal = ref(false);
+                const showPrivacyModal = ref(false);
+                const showTermsModal = ref(false);
+
+                // Form
+                const form = ref({
+                    name: '',
+                    company: '',
+                    email: '',
+                    phone: '',
+                    message: '',
+                    consent: false
+                });
+
+                // Hero Section
+                const hero = ref({
+                    slides: [
+                        {
+                            title: 'We actually read your error logs',
+                            subtitle: 'System integration for teams tired of being ticket #4,829. Real support from engineers who understand your technology stack'
+                        },
+                        {
+                            title: 'Built. Shipped. Running.',
+                            subtitle: 'Integrations that work now, not "sometime next year after alignment"'
+                        },
+                        {
+                            title: 'Designed for the next chapter',
+                            subtitle: 'Infrastructure that anticipates growth—so when your vision expands, your systems are already ready'
+                        },
+                        {
+                            title: 'Efficiency Changed the Equation',
+                            subtitle: 'AI made experimentation economical'
+                        }
+                    ],
+                    primaryCta: 'Schedule Consultation',
+                    secondaryCta: 'Learn More'
+                });
+
+                // Carousel state
+                const currentSlide = ref(0);
+                let slideInterval = null;
+
+                const goToSlide = (index) => {
+                    currentSlide.value = index;
+                    resetInterval();
+                };
+
+                const nextSlide = () => {
+                    currentSlide.value = (currentSlide.value + 1) % hero.value.slides.length;
+                };
+
+                const resetInterval = () => {
+                    if (slideInterval) {
+                        clearInterval(slideInterval);
+                    }
+                    slideInterval = setInterval(nextSlide, 5000);
+                };
+
+
+                // Why Section
+                const why = ref({
+                    title: 'No fluff. No upsells. Just results.',
+                    subtitle: 'Four things we actually stand behind.',
+                    items: [
+                        {
+                            title: 'We\'ve Done This Before',
+                            description: 'Hundreds of projects across different industries. We know what works and what doesn\'t.',
+                            icon: '<path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/>'
+                        },
+                        {
+                            title: 'Practical Know-How',
+                            description: 'Engineers who actually use the tools they recommend. No consultants reading from scripts.',
+                            icon: '<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>'
+                        },
+                        {
+                            title: 'We Pick Up the Phone',
+                            description: 'Real people in Singapore. When something breaks, you talk to someone who can fix it.',
+                            icon: '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>'
+                        },
+                        {
+                            title: 'Scalable Solutions',
+                            description: 'From SMEs to large enterprises, our solutions grow with your business needs.',
+                            icon: '<path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/>'
+                        }
+                    ]
+                });
+
+                // Industries Section
+                const industries = ref({
+                    title: 'Built For Your World',
+                    subtitle: 'We speak your industry\'s language.',
+                    items: [
+                        {
+                            name: 'Family Offices',
+                            description: 'Wealth management',
+                            icon: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>'
+                        },
+                        {
+                            name: 'Construction',
+                            description: 'Project & site systems',
+                            icon: '<path d="M2 20h20"/><path d="M5 20V8.35a2 2 0 0 1 .66-1.48l6-5.42a2 2 0 0 1 2.68 0l6 5.42a2 2 0 0 1 .66 1.48V20"/><path d="M9 20v-8h6v8"/>'
+                        },
+                        {
+                            name: 'Energy',
+                            description: 'Grid & utility systems',
+                            icon: '<path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>'
+                        },
+                        {
+                            name: 'Financial',
+                            description: 'Banks & institutions',
+                            icon: '<path d="M3 21h18"/><path d="M3 10h18"/><path d="M5 6l7-3 7 3"/><path d="M4 10v11"/><path d="M20 10v11"/><path d="M8 14v3"/><path d="M12 14v3"/><path d="M16 14v3"/>'
+                        }
+                    ]
+                });
+
+                // Services Section
+                const services = ref({
+                    title: 'What We Build',
+                    subtitle: 'Pick your problem. We\'ll handle the rest.',
+                    items: [
+                        {
+                            title: 'Infrastructure Services',
+                            tagline: 'Network & Data Center',
+                            description: 'Scalable IT infrastructure from servers to cloud.',
+                            icon: '<rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/>',
+                            features: ['Network & Data Center', 'Server & Storage']
+                        },
+                        {
+                            title: 'System Integration',
+                            tagline: 'Enterprise Connectivity',
+                            description: 'Connect applications and systems seamlessly.',
+                            icon: '<circle cx="12" cy="12" r="3"/><path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.93 19.07l2.83-2.83"/><path d="M16.24 7.76l2.83-2.83"/>',
+                            features: ['API & Data Integration', 'Custom Development']
+                        },
+                        {
+                            title: 'Digital Transformation',
+                            tagline: 'Modernization & Automation',
+                            description: 'Modernize processes with automation and AI.',
+                            icon: '<path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.93 19.07l2.83-2.83"/><path d="M16.24 7.76l2.83-2.83"/><circle cx="12" cy="12" r="4"/>',
+                            features: ['Process Automation', 'Legacy Modernization']
+                        },
+                        {
+                            title: 'AI Solutions',
+                            tagline: 'Practical AI for Business',
+                            description: 'AI that solves real problems - not science projects. From document processing to predictive analytics, we implement AI that delivers ROI.',
+                            icon: '<circle cx="12" cy="12" r="3"/><circle cx="4" cy="8" r="2"/><circle cx="4" cy="16" r="2"/><circle cx="20" cy="8" r="2"/><circle cx="20" cy="16" r="2"/><line x1="9" y1="11" x2="6" y2="9"/><line x1="9" y1="13" x2="6" y2="15"/><line x1="15" y1="11" x2="18" y2="9"/><line x1="15" y1="13" x2="18" y2="15"/>',
+                            features: ['AI Integration', 'Business Automation', 'Predictive Analytics']
+                        }
+                    ]
+                });
+
+                // CTA Section
+                const cta = ref({
+                    title: 'Let\'s skip the sales pitch.',
+                    subtitle: 'Tell us what\'s broken. We\'ll tell you if we can fix it.',
+                    primaryCta: 'Start the Conversation'
+                });
+
+                // Footer
+                const footer = ref({
+                    copyright: '© 2026 JE Dynamics Pte. Ltd. All rights reserved. UEN: 201008830H'
+                });
+
+                // Methods
+                const toggleMobileMenu = () => {
+                    mobileMenuOpen.value = !mobileMenuOpen.value;
+                };
+
+                const scrollToSection = (event, href) => {
+                    event.preventDefault();
+                    const element = document.querySelector(href);
+                    if (element) {
+                        const offset = 60;
+                        const position = element.getBoundingClientRect().top + window.pageYOffset - offset;
+                        window.scrollTo({ top: position, behavior: 'smooth' });
+                    }
+                };
+
+                const formSubmitting = ref(false);
+                const formError = ref('');
+                const turnstileToken = ref('');
+
+                const handleSubmit = async () => {
+                    // Validate Turnstile token
+                    if (!turnstileToken.value) {
+                        formError.value = 'Please complete the security check.';
+                        return;
+                    }
+
+                    formSubmitting.value = true;
+                    formError.value = '';
+
+                    try {
+                        const response = await fetch('/api/contact', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                name: form.value.name,
+                                company: form.value.company,
+                                email: form.value.email,
+                                phone: form.value.phone,
+                                message: form.value.message,
+                                turnstileToken: turnstileToken.value,
+                            }),
+                        });
+
+                        const result = await response.json();
+
+                        if (result.success) {
+                            alert('Thank you for your inquiry. We will contact you shortly.');
+                            showContactModal.value = false;
+                            // Reset form
+                            form.value = {
+                                name: '',
+                                company: '',
+                                email: '',
+                                phone: '',
+                                message: '',
+                                consent: false
+                            };
+                            turnstileToken.value = '';
+                            // Reset Turnstile widget
+                            if (window.turnstile) {
+                                window.turnstile.reset();
+                            }
+                        } else {
+                            formError.value = result.error || 'Failed to send message. Please try again.';
+                        }
+                    } catch (error) {
+                        console.error('Form submission error:', error);
+                        formError.value = 'Failed to send message. Please try again.';
+                    } finally {
+                        formSubmitting.value = false;
+                    }
+                };
+
+                // Close mobile menu on outside click or Escape key
+                const handleOutsideClick = (event) => {
+                    if (mobileMenuOpen.value) {
+                        const mobileMenu = document.querySelector('.mobile-menu');
+                        const toggleButton = document.querySelector('.nav-mobile-toggle');
+                        if (!mobileMenu.contains(event.target) && !toggleButton.contains(event.target)) {
+                            mobileMenuOpen.value = false;
+                        }
+                    }
+                };
+
+                const handleEscapeKey = (event) => {
+                    if (event.key === 'Escape') {
+                        if (showContactModal.value) {
+                            showContactModal.value = false;
+                        } else if (showPrivacyModal.value) {
+                            showPrivacyModal.value = false;
+                        } else if (showTermsModal.value) {
+                            showTermsModal.value = false;
+                        } else if (mobileMenuOpen.value) {
+                            mobileMenuOpen.value = false;
+                        }
+                    }
+                };
+
+                // Intersection Observer for animations
+                onMounted(() => {
+                    const observerOptions = {
+                        threshold: 0.1,
+                        rootMargin: '0px 0px -50px 0px'
+                    };
+
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add('visible');
+                            }
+                        });
+                    }, observerOptions);
+
+                    document.querySelectorAll('.fade-in').forEach(el => {
+                        observer.observe(el);
+                    });
+
+                    // Start carousel auto-rotation
+                    slideInterval = setInterval(nextSlide, 5000);
+
+                    // Add event listeners for mobile menu
+                    document.addEventListener('click', handleOutsideClick);
+                    document.addEventListener('keydown', handleEscapeKey);
+                });
+
+                onUnmounted(() => {
+                    // Clean up event listeners
+                    document.removeEventListener('click', handleOutsideClick);
+                    document.removeEventListener('keydown', handleEscapeKey);
+                    if (slideInterval) clearInterval(slideInterval);
+                });
+
+                // Expose Turnstile callbacks to window
+                window.onTurnstileSuccess = (token) => {
+                    turnstileToken.value = token;
+                };
+                window.onTurnstileExpired = () => {
+                    turnstileToken.value = '';
+                };
+
+                return {
+                    company,
+                    navLinks,
+                    mobileMenuOpen,
+                    showContactModal,
+                    showPrivacyModal,
+                    showTermsModal,
+                    form,
+                    formSubmitting,
+                    formError,
+                    hero,
+                    currentSlide,
+                    goToSlide,
+                    services,
+                    why,
+                    industries,
+                    cta,
+                    footer,
+                    toggleMobileMenu,
+                    scrollToSection,
+                    handleSubmit
+                };
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>
