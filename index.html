@@ -1207,13 +1207,14 @@
 
       <section class="industries-strip" aria-label="Industries served">
         <span class="label">— Trusted by</span>
-        <span>Family Offices</span>
-        <span>Bio-science</span>
-        <span>Energy</span>
         <span>Banking &amp; Finance</span>
-        <span>Trading</span>
+        <span>Bio-science</span>
         <span>Construction</span>
         <span>Education</span>
+        <span>Energy</span>
+        <span>Family Offices</span>
+        <span>Manufacturing</span>
+        <span>Tradings</span>
       </section>
 
     </main>
@@ -1277,7 +1278,11 @@
           <textarea class="form-textarea" id="f-message" placeholder="What problem are you solving? Any deadlines?"></textarea>
         </div>
 
-        <button class="form-submit" onclick="submitForm()">
+        <!-- Honeypot - hidden from humans, filled by bots -->
+        <input type="text" id="f-website" name="website" tabindex="-1" autocomplete="off"
+               style="position:absolute;left:-9999px;opacity:0;height:0;width:0;" aria-hidden="true">
+
+        <button class="form-submit" id="formSubmitBtn" onclick="submitForm()">
           Send brief
           <span class="arrow">→</span>
         </button>
@@ -1397,9 +1402,47 @@
       successView.style.display = 'none';
     }, 400);
   }
-  function submitForm() {
-    formView.style.display = 'none';
-    successView.style.display = 'block';
+  async function submitForm() {
+    const btn = document.getElementById('formSubmitBtn');
+    const payload = {
+      name:    document.getElementById('f-name').value.trim(),
+      company: document.getElementById('f-company').value.trim(),
+      email:   document.getElementById('f-email').value.trim(),
+      service: document.getElementById('f-service').value,
+      message: document.getElementById('f-message').value.trim(),
+      website: document.getElementById('f-website')?.value || '',
+    };
+
+    if (!payload.name || !payload.email || !payload.message) {
+      alert('Please fill in your name, email, and the brief.');
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(payload.email)) {
+      alert('Please enter a valid email address.');
+      return;
+    }
+
+    btn.disabled = true;
+    const original = btn.innerHTML;
+    btn.innerHTML = 'Sending...';
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.ok) throw new Error(data.error || 'Send failed');
+
+      formView.style.display = 'none';
+      successView.style.display = 'block';
+    } catch (err) {
+      console.error(err);
+      alert("Sorry - that didn't go through. Please try again, or email a.wong@jedyn.com directly.");
+      btn.disabled = false;
+      btn.innerHTML = original;
+    }
   }
 
   document.addEventListener('keydown', (e) => {

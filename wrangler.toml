@@ -1,0 +1,16 @@
+# wrangler.toml
+name = "my-site"
+main = "src/worker.js"
+compatibility_date = "2026-05-01"
+compatibility_flags = ["nodejs_compat"]   # required for the mimetext package
+
+# Static Assets binding (delete this block if you're using Pages or hosting HTML elsewhere)
+[assets]
+directory = "./public"        # put index.html in ./public
+binding   = "ASSETS"
+
+# Outbound email binding
+# The destination_address MUST be already verified in Email Routing.
+[[send_email]]
+name = "SEND_EMAIL"
+destination_address = "a.wong@jedyn.com"
