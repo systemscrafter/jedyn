@@ -5,8 +5,8 @@
 import { EmailMessage } from "cloudflare:email";
 import { createMimeMessage } from "mimetext";
 
-const TO_ADDRESS   = "blackkopi@gmail.com";          // must be VERIFIED in Email Routing
-const FROM_ADDRESS = "a.wong@jedyn.com";          // must be a domain you control
+const TO_ADDRESS   = "a.wong@jedyn.com";          // must be VERIFIED in Email Routing
+const FROM_ADDRESS = "noreply@jedyn.com";          // must be a domain you control
 const FROM_NAME    = "JEDYN Website";
 
 // Basic CORS - tighten the origin once you know your final domain
