@@ -1,5 +1,5 @@
 # wrangler.toml
-name = "my-site"
+name = "jedyn"
 main = "src/worker.js"
 compatibility_date = "2026-05-01"
 compatibility_flags = ["nodejs_compat"]   # required for the mimetext package
