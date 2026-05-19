@@ -1,0 +1,152 @@
+[
+  {
+    "id": 1,
+    "titleHtml": "Your IT should work for <em>you</em>. Not the other way around.",
+    "subtitle": "We untangle the systems that have quietly been running your business into the ground."
+  },
+  {
+    "id": 2,
+    "titleHtml": "Done with <em>\"we'll look into it\"</em>?",
+    "subtitle": "So are we. Fast diagnostics, clear answers, and fixes that stick."
+  },
+  {
+    "id": 3,
+    "titleHtml": "The cloud is great. <em>Your</em> cloud setup, maybe less so.",
+    "subtitle": "We audit, optimise, and sort out the sprawl before it becomes a problem you cannot ignore."
+  },
+  {
+    "id": 4,
+    "titleHtml": "Good IT is invisible. <em>Bad</em> IT is everything.",
+    "subtitle": "We make sure you are firmly in the first camp."
+  },
+  {
+    "id": 5,
+    "titleHtml": "You should not need an IT degree to run your <em>own</em> business.",
+    "subtitle": "We handle the complexity so you can focus on the work that actually pays."
+  },
+  {
+    "id": 6,
+    "titleHtml": "Built by the last guy. Inherited by you. <em>Fixed by us.</em>",
+    "subtitle": "Legacy systems do not have to be a life sentence."
+  },
+  {
+    "id": 7,
+    "titleHtml": "Security is not a <em>one-time checkbox</em>.",
+    "subtitle": "We keep your defences current, because the threats certainly are."
+  },
+  {
+    "id": 8,
+    "titleHtml": "Scaling fast is only exciting if your systems can <em>keep up</em>.",
+    "subtitle": "We make sure growth does not expose everything you have been meaning to sort out."
+  },
+  {
+    "id": 9,
+    "titleHtml": "Some IT firms speak in acronyms. We speak in <em>outcomes</em>.",
+    "subtitle": "What you get, why it matters, and what it costs - upfront, every time."
+  },
+  {
+    "id": 10,
+    "titleHtml": "Your backup plan should <em>actually</em> work.",
+    "subtitle": "We test, verify, and make sure \"we have backups\" means something when it counts."
+  },
+  {
+    "id": 11,
+    "titleHtml": "If your IT strategy is <em>\"hope nothing breaks\"</em>, we should talk.",
+    "subtitle": "Proactive support costs a fraction of what a crisis does."
+  },
+  {
+    "id": 12,
+    "titleHtml": "Technology moves fast. Your old setup, <em>not so much</em>.",
+    "subtitle": "We bridge the gap between where you are and where you need to be."
+  },
+  {
+    "id": 13,
+    "titleHtml": "Not every problem needs a <em>six-month project</em>.",
+    "subtitle": "Sometimes the fix is faster than the meeting to discuss the fix."
+  },
+  {
+    "id": 14,
+    "titleHtml": "Your staff should <em>not</em> be the ones rebooting the server.",
+    "subtitle": "Free your people from workarounds so they can do the work they were hired for."
+  },
+  {
+    "id": 15,
+    "titleHtml": "Cheap IT is <em>expensive</em>.",
+    "subtitle": "We have seen the invoices from the \"affordable\" option. We can do better."
+  },
+  {
+    "id": 16,
+    "titleHtml": "Compliance is not going away. <em>Neither are we.</em>",
+    "subtitle": "We keep you on the right side of the regulations that actually matter to your sector."
+  },
+  {
+    "id": 17,
+    "titleHtml": "You hired experts to run your business. Your IT should be <em>no different</em>.",
+    "subtitle": "Specialist support, without the full-time headcount."
+  },
+  {
+    "id": 18,
+    "titleHtml": "The problem is <em>rarely</em> where you think it is.",
+    "subtitle": "Proper diagnostics before anyone touches a thing. Every time."
+  },
+  {
+    "id": 19,
+    "titleHtml": "Most IT advice is <em>sold</em>, not given.",
+    "subtitle": "We tell you what you need - including when the answer is \"nothing, for now\"."
+  },
+  {
+    "id": 20,
+    "titleHtml": "Your competitor's downtime is not your opportunity if <em>you are also down</em>.",
+    "subtitle": "Resilient infrastructure is a business advantage, not just a safety net."
+  },
+  {
+    "id": 21,
+    "titleHtml": "A system that <em>almost</em> works is a system that does not work.",
+    "subtitle": "We close the gaps that everyone has quietly learned to work around."
+  },
+  {
+    "id": 22,
+    "titleHtml": "Remote teams need infrastructure <em>designed for them</em>.",
+    "subtitle": "Not office kit with a VPN bolted on and a prayer."
+  },
+  {
+    "id": 23,
+    "titleHtml": "The words <em>\"it should be fine\"</em> have started more IT disasters than anything else.",
+    "subtitle": "We verify. We document. We make sure."
+  },
+  {
+    "id": 24,
+    "titleHtml": "Good enough got you here. It will <em>not</em> get you there.",
+    "subtitle": "Growth exposes every shortcut. We find them before your customers do."
+  },
+  {
+    "id": 25,
+    "titleHtml": "Vendors will sell you anything. We help you buy the <em>right</em> things.",
+    "subtitle": "Independent advice from people who have no interest in your invoice size."
+  },
+  {
+    "id": 26,
+    "titleHtml": "Your password policy is not a policy if <em>nobody follows it</em>.",
+    "subtitle": "We build security habits that actually stick across your whole team."
+  },
+  {
+    "id": 27,
+    "titleHtml": "Every business has one system <em>nobody understands anymore</em>.",
+    "subtitle": "We find it, document it, and make sure it stops being a single point of failure."
+  },
+  {
+    "id": 28,
+    "titleHtml": "Support tickets are a symptom. We treat the <em>cause</em>.",
+    "subtitle": "Fewer helpdesk calls means your team is getting on with things instead of waiting."
+  },
+  {
+    "id": 29,
+    "titleHtml": "There is no such thing as <em>\"too small to be a target\"</em>.",
+    "subtitle": "Cyber threats are automated. They are not selective."
+  },
+  {
+    "id": 30,
+    "titleHtml": "We do <em>not</em> disappear after go-live.",
+    "subtitle": "Implementation is the start of the relationship, not the end of it."
+  }
+]

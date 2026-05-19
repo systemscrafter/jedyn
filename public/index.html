@@ -198,13 +198,13 @@
 
   main {
     overflow: hidden;
-    padding: 22px 22px 0;
+    padding: 22px 22px 22px;
     max-width: 1100px;
     margin: 0 auto;
     width: 100%;
     display: grid;
-    /* Hero gets a generous slice; work-area takes what's left; industries strip is intrinsic */
-    grid-template-rows: minmax(280px, 0.85fr) 1fr auto;
+    /* Hero gets a generous slice; work-area takes the rest (industries now live inside about-view) */
+    grid-template-rows: minmax(280px, 0.85fr) 1fr;
     gap: 20px;
   }
 
@@ -323,7 +323,8 @@
     padding: 22px 24px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    /* Both views anchor from the top so the eyebrow/title don't shift Y during the swap */
+    justify-content: flex-start;
     opacity: 0;
     transform: translateY(8px);
     transition: opacity 0.4s ease, transform 0.4s ease;
@@ -335,17 +336,16 @@
     transform: translateY(0);
     pointer-events: auto;
   }
-  /* Service detail anchors top — long body */
-  #serviceView { justify-content: flex-start; }
 
   /* About view (default) */
   .about-view .about-eyebrow {
-    font-size: 13px;
+    /* Matched exactly to .detail-service-eyebrow so the eyebrow doesn't shift on view-swap */
+    font-size: 12.5px;
     font-weight: 600;
     color: var(--color-accent);
     text-transform: uppercase;
     letter-spacing: 0.12em;
-    margin-bottom: 16px;
+    margin-bottom: 10px;
   }
   .about-view .about-title {
     font-size: clamp(24px, 2.6vw, 32px);
@@ -529,36 +529,25 @@
     transform: scale(1.25);
   }
 
-  /* ============ INDUSTRIES STRIP ============ */
-  .industries-strip {
+  /* ============ INDUSTRIES (inside About panel) ============ */
+  .about-industries {
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
     justify-content: center;
-    gap: 0;
-    padding: 12px 0 14px;
-    opacity: 0;
-    animation: fadeUp 1s 0.8s forwards ease-out;
+    gap: 8px;
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid var(--color-border);
   }
-  .industries-strip .label {
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--color-text-secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
-    margin-right: 14px;
-  }
-  .industries-strip span:not(.label) {
+  .about-industries span {
+    padding: 5px 12px;
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
     font-size: 12.5px;
     color: var(--color-text);
     font-weight: 500;
     letter-spacing: -0.005em;
-  }
-  .industries-strip span:not(.label) + span:not(.label)::before {
-    content: '·';
-    margin: 0 10px;
-    color: var(--color-text-secondary);
-    opacity: 0.5;
   }
 
   /* ============ FOOTER ============ */
@@ -768,7 +757,7 @@
   /* ============ RESPONSIVE ============ */
   @media (max-width: 1100px) {
     .work-area { grid-template-columns: 280px 1fr; }
-    main { grid-template-rows: minmax(260px, 0.8fr) 1fr auto; }
+    main { grid-template-rows: minmax(260px, 0.8fr) 1fr; }
     .hero-title { font-size: clamp(34px, 6vw, 64px); }
   }
 
@@ -776,8 +765,8 @@
   @media (max-width: 980px) and (orientation: landscape) {
     .work-area { grid-template-columns: 260px 1fr; }
     main {
-      grid-template-rows: minmax(220px, 0.75fr) 1fr auto;
-      padding: 16px 18px 0;
+      grid-template-rows: minmax(220px, 0.75fr) 1fr;
+      padding: 16px 18px;
     }
     .hero-title { font-size: clamp(32px, 5.5vw, 56px); }
   }
@@ -787,8 +776,8 @@
     .frame { height: auto; min-height: 100vh; }
     main {
       overflow: visible;
-      grid-template-rows: auto auto auto;
-      padding: 20px 18px 0;
+      grid-template-rows: auto auto;
+      padding: 20px 18px;
     }
     /* Hero gets its own breathing room in the scrolling layout */
     .hero {
@@ -845,7 +834,7 @@
     main {
       padding: 0;
       gap: 0;
-      grid-template-rows: auto auto auto;
+      grid-template-rows: auto auto;
     }
     .hero {
       min-height: calc(100vh - var(--nav-height));
@@ -931,31 +920,12 @@
     .about-stat-num { font-size: 26px; }
     .about-stat-label { font-size: 12.5px; }
 
-    .industries-strip {
-      flex-direction: row;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: flex-start;
-      gap: 6px 0;
-      padding: 14px 16px 10px;
+    /* Mobile: tighter gaps; centering is inherited from the base rule */
+    .about-industries {
+      gap: 6px;
     }
-    .industries-strip .label {
-      flex-basis: 100%;
-      margin: 0 0 6px;
-      text-align: left;
-      font-size: 12px;
-    }
-    .industries-strip span:not(.label) {
-      padding: 5px 12px;
-      background: var(--color-bg-card);
-      border: 1px solid var(--color-border);
-      border-radius: 999px;
+    .about-industries span {
       font-size: 13px;
-      margin-right: 6px;
-    }
-    /* Suppress the inline middot separator on mobile — chips already separate */
-    .industries-strip span:not(.label) + span:not(.label)::before {
-      content: none;
     }
 
     .footer-container {
@@ -1022,40 +992,9 @@
 
       <section class="hero">
         <div class="carousel" id="carousel">
-          <div class="hero-slides" aria-live="polite">
-            <div class="hero-slide" data-slide="0">
-              <h2 class="hero-title">Built to run. Ready to <em>scale</em>.</h2>
-              <p class="hero-subtitle">Robust infrastructure today, room to grow tomorrow - without the rebuild.</p>
-            </div>
-            <div class="hero-slide" data-slide="1">
-              <h2 class="hero-title">Your tech should not need <em>babysitting</em>.</h2>
-              <p class="hero-subtitle">We fix messy systems, slow workflows, and "temporary" solutions that somehow became permanent.</p>
-            </div>
-            <div class="hero-slide" data-slide="2">
-              <h2 class="hero-title">Less buzzword. More <em>backbone</em>.</h2>
-              <p class="hero-subtitle">Practical IT consulting that makes your business faster, safer, and less annoying to run.</p>
-            </div>
-            <div class="hero-slide" data-slide="3">
-              <h2 class="hero-title">Stop paying for <em>digital duct tape</em>.</h2>
-              <p class="hero-subtitle">We replace patchwork tech with systems that actually hold up when work gets serious.</p>
-            </div>
-            <div class="hero-slide" data-slide="4">
-              <h2 class="hero-title">Straight answers. Sensible <em>solutions</em>.</h2>
-              <p class="hero-subtitle">No jargon, no upselling - just clear advice and IT that fits your business.</p>
-            </div>
-            <div class="hero-slide" data-slide="5">
-              <h2 class="hero-title"><em>Quietly</em> keeping you online.</h2>
-              <p class="hero-subtitle">The best IT is the kind you never have to think about - that's our job.</p>
-            </div>
-          </div>
-          <div class="hero-dots" role="tablist" aria-label="Hero messages">
-            <button class="hero-dot" data-slide="0" aria-label="Message 1"></button>
-            <button class="hero-dot" data-slide="1" aria-label="Message 2"></button>
-            <button class="hero-dot" data-slide="2" aria-label="Message 3"></button>
-            <button class="hero-dot" data-slide="3" aria-label="Message 4"></button>
-            <button class="hero-dot" data-slide="4" aria-label="Message 5"></button>
-            <button class="hero-dot" data-slide="5" aria-label="Message 6"></button>
-          </div>
+          <!-- Slides and dots are populated by JS from /it-taglines.json (3 random picks per load) -->
+          <div class="hero-slides" id="heroSlides" aria-live="polite"></div>
+          <div class="hero-dots" id="heroDots" role="tablist" aria-label="Hero messages"></div>
         </div>
       </section>
 
@@ -1192,6 +1131,17 @@
                 <div class="about-stat-label">Service lines</div>
               </div>
             </div>
+            <div class="about-industries" aria-label="Industries served">
+              <span>Banking &amp; Finance Services</span>
+              <span>Bioscience</span>
+              <span>Construction</span>
+              <span>Education</span>
+              <span>Energy</span>
+              <span>Family Offices</span>
+              <span>Manufacturing</span>
+              <span>Professional Services</span>
+              <span>Trading</span>
+            </div>
           </div>
 
           <div class="detail-view" id="serviceView">
@@ -1202,18 +1152,6 @@
 
         </div>
 
-      </section>
-
-      <section class="industries-strip" aria-label="Industries served">
-        <span>Banking &amp; Finance Services</span>
-        <span>Bioscience</span>
-        <span>Construction</span>
-        <span>Education</span>
-        <span>Energy</span>
-        <span>Family Offices</span>
-        <span>Manufacturing</span>
-        <span>Professional Services</span>
-        <span>Trading</span>
       </section>
 
     </main>
@@ -1302,10 +1240,13 @@
   const formView = document.getElementById('formView');
   const successView = document.getElementById('successView');
 
-  const slides = document.querySelectorAll('.hero-slide');
-  const dots = document.querySelectorAll('.hero-dot');
   const carouselEl = document.getElementById('carousel');
+  const slidesContainer = document.getElementById('heroSlides');
+  const dotsContainer = document.getElementById('heroDots');
   const SLIDE_INTERVAL = 6500;
+  const PICK_COUNT = 3;
+  let slides = [];
+  let dots = [];
   let currentSlide = 0;
   let carouselTimer = null;
 
@@ -1314,17 +1255,102 @@
     dots.forEach((d, i) => d.classList.toggle('active', i === idx));
     currentSlide = idx;
   }
-  function nextSlide() { showSlide((currentSlide + 1) % slides.length); }
+  function nextSlide() {
+    if (!slides.length) return;
+    showSlide((currentSlide + 1) % slides.length);
+  }
   function startCarousel() {
     stopCarousel();
-    carouselTimer = setInterval(nextSlide, SLIDE_INTERVAL);
+    if (slides.length > 1) carouselTimer = setInterval(nextSlide, SLIDE_INTERVAL);
   }
   function stopCarousel() {
     if (carouselTimer) { clearInterval(carouselTimer); carouselTimer = null; }
   }
 
+  // Fisher–Yates: unbiased shuffle, return the first n entries
+  function pickRandom(arr, n) {
+    const copy = arr.slice();
+    for (let i = copy.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy.slice(0, n);
+  }
+
+  // Parse a "plain text with <em>…</em> segments" string into real DOM nodes
+  // without ever touching innerHTML. Only <em> is honoured; anything else
+  // (or stray angle brackets) is rendered as literal text.
+  function appendTitleTo(target, titleHtml) {
+    const parts = String(titleHtml).split(/(<em>[\s\S]*?<\/em>)/g);
+    for (const part of parts) {
+      if (!part) continue;
+      const m = part.match(/^<em>([\s\S]*?)<\/em>$/);
+      if (m) {
+        const em = document.createElement('em');
+        em.textContent = m[1];
+        target.appendChild(em);
+      } else {
+        target.appendChild(document.createTextNode(part));
+      }
+    }
+  }
+
+  function renderSlides(items) {
+    slidesContainer.replaceChildren();
+    dotsContainer.replaceChildren();
+
+    items.forEach((item, i) => {
+      const slide = document.createElement('div');
+      slide.className = 'hero-slide';
+      slide.dataset.slide = i;
+
+      const h2 = document.createElement('h2');
+      h2.className = 'hero-title';
+      appendTitleTo(h2, item.titleHtml || '');
+
+      const p = document.createElement('p');
+      p.className = 'hero-subtitle';
+      p.textContent = item.subtitle || '';
+
+      slide.appendChild(h2);
+      slide.appendChild(p);
+      slidesContainer.appendChild(slide);
+
+      const dot = document.createElement('button');
+      dot.className = 'hero-dot';
+      dot.dataset.slide = i;
+      dot.setAttribute('aria-label', `Message ${i + 1}`);
+      dotsContainer.appendChild(dot);
+    });
+
+    slides = slidesContainer.querySelectorAll('.hero-slide');
+    dots = dotsContainer.querySelectorAll('.hero-dot');
+
+    if (slides.length) {
+      showSlide(0);
+      startCarousel();
+    }
+  }
+
+  async function loadCarousel() {
+    try {
+      const res = await fetch('/it-taglines.json', { cache: 'no-store' });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const all = await res.json();
+      if (!Array.isArray(all) || !all.length) throw new Error('Empty taglines list');
+      renderSlides(pickRandom(all, Math.min(PICK_COUNT, all.length)));
+    } catch (err) {
+      console.error('Carousel load failed:', err);
+      // Fallback so the hero is never blank
+      renderSlides([{
+        titleHtml: 'Built to run. Ready to <em>scale</em>.',
+        subtitle: 'Robust infrastructure today, room to grow tomorrow — without the rebuild.',
+      }]);
+    }
+  }
+
   window.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => { showSlide(0); startCarousel(); }, 300);
+    setTimeout(loadCarousel, 300);
   });
 
   carouselEl.addEventListener('mouseenter', stopCarousel);
@@ -1336,8 +1362,15 @@
     if (!overlay.classList.contains('active')) startCarousel();
   });
 
-  dots.forEach((dot, i) => {
-    dot.addEventListener('click', () => { showSlide(i); startCarousel(); });
+  // Event delegation: one listener survives any re-render of the dot buttons
+  dotsContainer.addEventListener('click', (e) => {
+    const dot = e.target.closest('.hero-dot');
+    if (!dot || !dotsContainer.contains(dot)) return;
+    const idx = Number(dot.dataset.slide);
+    if (Number.isInteger(idx)) {
+      showSlide(idx);
+      startCarousel();
+    }
   });
 
   document.addEventListener('visibilitychange', () => {
