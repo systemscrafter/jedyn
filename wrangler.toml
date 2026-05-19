@@ -13,4 +13,4 @@ binding   = "ASSETS"
 # The destination_address MUST be already verified in Email Routing.
 [[send_email]]
 name = "SEND_EMAIL"
-destination_address = "support@je.com.sg"
+destination_address = "a.wong@jedyn.com"
