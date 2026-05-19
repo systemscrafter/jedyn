@@ -16,6 +16,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
+<!-- Cloudflare Turnstile: bot challenge for the contact form. Site key is public; secret lives in env.TURNSTILE_SECRET on the worker. -->
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
 <style>
   :root {
     --color-text: #1d1d1f;
@@ -703,6 +706,11 @@
     font-family: inherit;
   }
 
+  .form-turnstile {
+    margin-bottom: 14px;
+    min-height: 65px; /* reserve space so the form doesn't jump when the widget mounts */
+  }
+
   .form-submit {
     width: 100%;
     padding: 14px;
@@ -1219,6 +1227,14 @@
         <input type="text" id="f-website" name="website" tabindex="-1" autocomplete="off"
                style="position:absolute;left:-9999px;opacity:0;height:0;width:0;" aria-hidden="true">
 
+        <!-- Cloudflare Turnstile widget — injects a hidden input named cf-turnstile-response with the token -->
+        <div class="form-turnstile">
+          <div class="cf-turnstile"
+               data-sitekey="0x4AAAAAAB3FeJBtGRIwJM4e"
+               data-theme="light"
+               data-size="flexible"></div>
+        </div>
+
         <button class="form-submit" id="formSubmitBtn" onclick="submitForm()">
           Send brief
           <span class="arrow">→</span>
@@ -1432,10 +1448,26 @@
     setTimeout(() => {
       formView.style.display = 'block';
       successView.style.display = 'none';
+      resetTurnstile();
     }, 400);
   }
+
+  // Turnstile tokens are single-use and expire after 5 minutes. Reset the
+  // widget after any send attempt so the next click gets a fresh token.
+  function resetTurnstile() {
+    if (window.turnstile && typeof window.turnstile.reset === 'function') {
+      try { window.turnstile.reset(); } catch (_) { /* widget not yet rendered */ }
+    }
+  }
+
+  function getTurnstileToken() {
+    const input = document.querySelector('input[name="cf-turnstile-response"]');
+    return input ? input.value.trim() : '';
+  }
+
   async function submitForm() {
     const btn = document.getElementById('formSubmitBtn');
+    const turnstileToken = getTurnstileToken();
     const payload = {
       name:    document.getElementById('f-name').value.trim(),
       company: document.getElementById('f-company').value.trim(),
@@ -1443,6 +1475,7 @@
       service: document.getElementById('f-service').value,
       message: document.getElementById('f-message').value.trim(),
       website: document.getElementById('f-website')?.value || '',
+      turnstileToken,
     };
 
     if (!payload.name || !payload.email || !payload.message) {
@@ -1451,6 +1484,10 @@
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(payload.email)) {
       alert('Please enter a valid email address.');
+      return;
+    }
+    if (!turnstileToken) {
+      alert('Please complete the verification challenge before sending.');
       return;
     }
 
@@ -1472,6 +1509,8 @@
     } catch (err) {
       console.error(err);
       alert("Sorry - that didn't go through. Please try again.");
+      // Token is now consumed (or invalid) — reset so the retry can get a fresh one
+      resetTurnstile();
       btn.disabled = false;
       btn.innerHTML = original;
     }

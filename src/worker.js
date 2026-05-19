@@ -35,6 +35,31 @@ const esc = (s = "") =>
 const cleanHeader = (s = "") =>
   String(s).replace(/[\r\n]+/g, " ").trim();
 
+// Verify a Cloudflare Turnstile token against the siteverify endpoint.
+// Returns { ok: true } on success or { ok: false, codes: [...] } on failure.
+async function verifyTurnstile(token, secret, remoteIp) {
+  const body = new URLSearchParams({ secret, response: token });
+  if (remoteIp) body.set("remoteip", remoteIp);
+
+  const res = await fetch(
+    "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body,
+    },
+  );
+
+  if (!res.ok) {
+    return { ok: false, codes: [`http-${res.status}`] };
+  }
+
+  const result = await res.json();
+  return result.success
+    ? { ok: true }
+    : { ok: false, codes: result["error-codes"] || [] };
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -62,6 +87,7 @@ export default {
       const email = String(data.email || "").trim().toLowerCase();
       const service = String(data.service || "").trim();
       const message = String(data.message || "").trim();
+      const turnstileToken = String(data.turnstileToken || "").trim();
 
       if (!name || !email || !message) {
         return json({ ok: false, error: "Missing required fields" }, 400);
@@ -73,6 +99,25 @@ export default {
 
       if (message.length > 5000) {
         return json({ ok: false, error: "Message too long" }, 400);
+      }
+
+      // Turnstile verification — gate before any outbound email cost.
+      if (!turnstileToken) {
+        return json({ ok: false, error: "Verification missing" }, 400);
+      }
+      if (!env.TURNSTILE_SECRET) {
+        console.error("TURNSTILE_SECRET binding is missing");
+        return json({ ok: false, error: "Server misconfigured" }, 500);
+      }
+      const remoteIp = request.headers.get("CF-Connecting-IP") || "";
+      const verdict = await verifyTurnstile(
+        turnstileToken,
+        env.TURNSTILE_SECRET,
+        remoteIp,
+      );
+      if (!verdict.ok) {
+        console.error("Turnstile failed:", verdict.codes);
+        return json({ ok: false, error: "Verification failed" }, 403);
       }
 
       if (!env.SEND_EMAIL) {

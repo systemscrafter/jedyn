@@ -14,3 +14,8 @@ binding   = "ASSETS"
 [[send_email]]
 name = "SEND_EMAIL"
 destination_address = "a.wong@jedyn.com"
+
+# Cloudflare Turnstile — site key is public (in public/index.html), but the
+# secret MUST be set out-of-band so it doesn't end up in source control:
+#   wrangler secret put TURNSTILE_SECRET
+# The worker reads it as env.TURNSTILE_SECRET in src/worker.js.
