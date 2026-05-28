@@ -1,0 +1,29 @@
+# JE Dynamics
+
+> IT consulting and software engineering services for Singapore businesses.
+
+JE Dynamics helps businesses modernise operations, troubleshoot IT issues, improve cloud and security setups, and build reliable systems that scale.
+
+## Website
+
+- Homepage: https://jedyn.com/
+- Sitemap: https://jedyn.com/sitemap.xml
+
+## Key Topics
+
+- IT consulting
+- Digital transformation
+- Software engineering
+- Managed IT support
+- Troubleshooting and diagnostics
+- Cloud optimisation
+- Security and compliance
+- System integration
+
+## Contact
+
+Use the contact form on https://jedyn.com/ for project enquiries.
+
+## Crawling Guidance
+
+Public website content is available for indexing and summarisation. Do not use `/api/contact` for crawling or automated submissions.
