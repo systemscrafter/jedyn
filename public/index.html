@@ -455,6 +455,7 @@
   .carousel {
     opacity: 0;
     animation: fadeUp 1s 0.2s forwards ease-out;
+    touch-action: pan-y;
   }
 
   .hero-slides {
@@ -1264,10 +1265,14 @@
   const dotsContainer = document.getElementById('heroDots');
   const SLIDE_INTERVAL = 6500;
   const PICK_COUNT = 3;
+  const SWIPE_MIN_DISTANCE = 48;
+  const SWIPE_MAX_VERTICAL_RATIO = 0.75;
   let slides = [];
   let dots = [];
   let currentSlide = 0;
   let carouselTimer = null;
+  let swipeStartX = null;
+  let swipeStartY = null;
 
   function showSlide(idx) {
     slides.forEach((s, i) => s.classList.toggle('active', i === idx));
@@ -1277,6 +1282,10 @@
   function nextSlide() {
     if (!slides.length) return;
     showSlide((currentSlide + 1) % slides.length);
+  }
+  function previousSlide() {
+    if (!slides.length) return;
+    showSlide((currentSlide - 1 + slides.length) % slides.length);
   }
   function startCarousel() {
     stopCarousel();
@@ -1380,6 +1389,52 @@
   carouselEl.addEventListener('focusout', () => {
     if (!overlay.classList.contains('active')) startCarousel();
   });
+
+  function resetSwipe() {
+    swipeStartX = null;
+    swipeStartY = null;
+  }
+
+  function finishCarouselGesture(endX, endY) {
+    if (swipeStartX === null || swipeStartY === null) return false;
+
+    const deltaX = endX - swipeStartX;
+    const deltaY = endY - swipeStartY;
+    const absX = Math.abs(deltaX);
+    const absY = Math.abs(deltaY);
+    resetSwipe();
+
+    if (slides.length < 2 || absX < SWIPE_MIN_DISTANCE || absY > absX * SWIPE_MAX_VERTICAL_RATIO) {
+      return false;
+    }
+
+    if (deltaX < 0) nextSlide();
+    else previousSlide();
+    startCarousel();
+    return true;
+  }
+
+  carouselEl.addEventListener('touchstart', (e) => {
+    const touch = e.changedTouches[0];
+    if (!touch) return;
+    swipeStartX = touch.clientX;
+    swipeStartY = touch.clientY;
+    stopCarousel();
+  }, { passive: true });
+
+  carouselEl.addEventListener('touchend', (e) => {
+    const touch = e.changedTouches[0];
+    const swiped = touch ? finishCarouselGesture(touch.clientX, touch.clientY) : false;
+    if (!swiped) {
+      resetSwipe();
+      if (!overlay.classList.contains('active')) startCarousel();
+    }
+  }, { passive: true });
+
+  carouselEl.addEventListener('touchcancel', () => {
+    resetSwipe();
+    if (!overlay.classList.contains('active')) startCarousel();
+  }, { passive: true });
 
   // Event delegation: one listener survives any re-render of the dot buttons
   dotsContainer.addEventListener('click', (e) => {
